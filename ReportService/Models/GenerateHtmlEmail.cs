@@ -9,7 +9,7 @@ namespace ReportService.Models
 {
     public class GenerateHtmlEmail
     {
-        public string GnerateErrors(List<Error> errors, int interval)
+        public string GenerateErrors(List<Error> errors, int interval)
         {
             if(errors == null)
                 throw new ArgumentNullException(nameof(errors));
