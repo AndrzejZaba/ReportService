@@ -1,6 +1,7 @@
-﻿using ReportService.Models;
-using ReportService.Models.Domains;
-using ReportService.Repositories;
+﻿using EmailSender;
+using ReportService.Core.Repositories;
+using ReportService.Core;    
+using ReportService.Core.Domains;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -74,8 +75,8 @@ namespace ReportService
                 return;
 
             await _email.Send("Błędy w aplikacji", _htmlEmail.GenerateErrors(errors, IntervalMinutes), _emailReceiver);
-            Logger.Info("Error sent...");
 
+            Logger.Info("Error sent...");
         }
 
         private async void SendReport()

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ReportService.Models.Domains
+namespace ReportService.Core.Domains
 {
     public class Error
     {

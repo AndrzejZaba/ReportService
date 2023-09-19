@@ -1,4 +1,4 @@
-﻿using ReportService.Extensions;
+﻿using EmailSender.Extensions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,7 +9,7 @@ using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ReportService.Models
+namespace EmailSender
 {
     public class Email
     {
@@ -43,7 +43,7 @@ namespace ReportService.Models
             _mail.BodyEncoding = Encoding.UTF8;
             _mail.SubjectEncoding = Encoding.UTF8;
 
-            _mail.Body = body;
+            //_mail.Body = body;
             _mail.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(body.StripHTML(), null, MediaTypeNames.Text.Plain));
 
             _mail.AlternateViews.Add(AlternateView.CreateAlternateViewFromString($@"

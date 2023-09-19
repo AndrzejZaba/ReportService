@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ReportService.Models
+namespace EmailSender
 {
     public class EmailParams
     {
