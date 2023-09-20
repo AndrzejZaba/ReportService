@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportService.Core", "Repor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportService.ConsoleApp", "ReportService.ConsoleApp\ReportService.ConsoleApp.csproj", "{9CE6C6D6-F7C8-4F99-897F-F7642C23DCCD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cipher", "Cipher\Cipher.csproj", "{18DA1FC0-192C-4B59-A421-9EF2CB9A9031}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{9CE6C6D6-F7C8-4F99-897F-F7642C23DCCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9CE6C6D6-F7C8-4F99-897F-F7642C23DCCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9CE6C6D6-F7C8-4F99-897F-F7642C23DCCD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18DA1FC0-192C-4B59-A421-9EF2CB9A9031}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18DA1FC0-192C-4B59-A421-9EF2CB9A9031}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18DA1FC0-192C-4B59-A421-9EF2CB9A9031}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18DA1FC0-192C-4B59-A421-9EF2CB9A9031}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

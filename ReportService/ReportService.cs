@@ -13,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Configuration;
+using Cipher;
 
 namespace ReportService
 {
@@ -28,6 +29,7 @@ namespace ReportService
         private Email _email;
         private GenerateHtmlEmail _htmlEmail = new GenerateHtmlEmail();
         private string _emailReceiver;
+        private StringCipher _stringCipher = new StringCipher("73C09781-855C-4574-8928-95D772C04904");
         public ReportService()
         {
             InitializeComponent();
@@ -36,6 +38,16 @@ namespace ReportService
             {
                 _emailReceiver = ConfigurationManager.AppSettings["ReceiverEmail"];
 
+                var encryptedPassword = ConfigurationManager.AppSettings["SenderEmailPassword"];
+                if (encryptedPassword.StartsWith("encrypt:"))
+                {
+                    encryptedPassword = _stringCipher.Encrypt(encryptedPassword.Replace("encrypt:", ""));
+
+                    var configFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                    configFile.AppSettings.Settings["SenderEmailPassword"].Value = encryptedPassword;
+                    configFile.Save();
+                }
+
                 _email = new Email(new EmailParams
                 {
                     HostSmtp = ConfigurationManager.AppSettings["HostSmtp"],
@@ -43,7 +55,7 @@ namespace ReportService
                     EnableSsl = Convert.ToBoolean(ConfigurationManager.AppSettings["EnableSsl"]),
                     SenderName = ConfigurationManager.AppSettings["SenderName"],
                     SenderEmail = ConfigurationManager.AppSettings["SenderEmail"],
-                    SenderEmailPassword = ConfigurationManager.AppSettings["SenderEmailPassword"]
+                    SenderEmailPassword = DecryptSenderEmailPassword()
                 });
             }
             catch (Exception ex)
@@ -51,6 +63,21 @@ namespace ReportService
                 Logger.Error(ex, ex.Message);
                 throw new Exception(ex.Message);
             }
+        }
+
+        private string DecryptSenderEmailPassword()
+        {
+            var encryptedPassword = ConfigurationManager.AppSettings["SenderEmailPassword"];
+            if (encryptedPassword.StartsWith("encrypt:"))
+            {
+                encryptedPassword = _stringCipher.Encrypt(encryptedPassword.Replace("encrypt:", ""));
+
+                var configFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                configFile.AppSettings.Settings["SenderEmailPassword"].Value = encryptedPassword;
+                configFile.Save();
+            }
+
+            return _stringCipher.Decrypt(encryptedPassword);
         }
 
         protected override void OnStart(string[] args)

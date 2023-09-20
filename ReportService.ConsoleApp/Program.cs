@@ -1,4 +1,5 @@
-﻿using EmailSender;
+﻿using Cipher;
+using EmailSender;
 using ReportService.Core;
 using ReportService.Core.Domains;
 using ReportService.Core.Repositories;
@@ -14,7 +15,14 @@ namespace ReportService.ConsoleApp
     {
         static void Main(string[] args)
         {
+            var stringCipher = new StringCipher("1");
+            var encryptedPassword = stringCipher.Encrypt("hasło");
+            var decryptedPassword = stringCipher.Decrypt(encryptedPassword);
 
+            Console.WriteLine(encryptedPassword);
+            Console.WriteLine(decryptedPassword);
+            Console.ReadLine();
+            return; 
             var emailReceiver = "andrzejzaba@onet.pl";
 
             var htmlEmail = new GenerateHtmlEmail();

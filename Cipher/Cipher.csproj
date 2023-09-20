@@ -4,17 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9CE6C6D6-F7C8-4F99-897F-F7642C23DCCD}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>ReportService.ConsoleApp</RootNamespace>
-    <AssemblyName>ReportService.ConsoleApp</AssemblyName>
+    <ProjectGuid>{18DA1FC0-192C-4B59-A421-9EF2CB9A9031}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Cipher</RootNamespace>
+    <AssemblyName>Cipher</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,7 +23,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -43,25 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="StringCipher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Cipher\Cipher.csproj">
-      <Project>{18DA1FC0-192C-4B59-A421-9EF2CB9A9031}</Project>
-      <Name>Cipher</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EmailSender\EmailSender.csproj">
-      <Project>{c0a83973-055d-4bef-b7ec-980c0c8e5ec0}</Project>
-      <Name>EmailSender</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ReportService.Core\ReportService.Core.csproj">
-      <Project>{42adcbd0-2d85-4bde-8ebf-557d0d3a7fbc}</Project>
-      <Name>ReportService.Core</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
