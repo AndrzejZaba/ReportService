@@ -22,7 +22,7 @@ namespace ReportService
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         private const int SendHour = 8;
-        private const int IntervalMinutes = 60;
+        private const int IntervalMinutes = 1;
         private Timer _timer = new Timer(IntervalMinutes * 60000);
         private ErrorRepository _errorRepository = new ErrorRepository();
         private ReportRepository _reportRepository = new ReportRepository();
