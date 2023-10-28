@@ -51,7 +51,7 @@ namespace EmailSender
                 <head>
                 </head>
                 <body>
-                    <div style='font-size: 16px; padding: 10px; font-family: Arial; line-height: 1.4;>
+                    <div style='font-size: 16px; padding: 10px; font-family: Arial; line-height: 1.4;'>
                         {body}
                     </div>
                 </body>

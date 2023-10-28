@@ -21,15 +21,16 @@ namespace ReportService
     {
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
-        private const int SendHour = 8;
-        private const int IntervalMinutes = 1;
-        private Timer _timer = new Timer(IntervalMinutes * 60000);
+        private readonly int _sendHour;
+        private readonly int _intervalMinutes;
+        private readonly Timer _timer;
         private ErrorRepository _errorRepository = new ErrorRepository();
         private ReportRepository _reportRepository = new ReportRepository();
         private Email _email;
         private GenerateHtmlEmail _htmlEmail = new GenerateHtmlEmail();
         private string _emailReceiver;
         private StringCipher _stringCipher = new StringCipher("73C09781-855C-4574-8928-95D772C04904");
+        private const string NotEncryptedPasswordPrefix = "encrypt:";
         public ReportService()
         {
             InitializeComponent();
@@ -37,11 +38,14 @@ namespace ReportService
             try
             {
                 _emailReceiver = ConfigurationManager.AppSettings["ReceiverEmail"];
+                _sendHour = Convert.ToInt32(ConfigurationManager.AppSettings["LogsCheckIntervalInMinutes"]);
+                _intervalMinutes = Convert.ToInt32(ConfigurationManager.AppSettings["LogsCheckIntervalInMinutes"]);
+                _timer = new Timer(_intervalMinutes * 60000);
 
                 var encryptedPassword = ConfigurationManager.AppSettings["SenderEmailPassword"];
-                if (encryptedPassword.StartsWith("encrypt:"))
+                if (encryptedPassword.StartsWith(NotEncryptedPasswordPrefix))
                 {
-                    encryptedPassword = _stringCipher.Encrypt(encryptedPassword.Replace("encrypt:", ""));
+                    encryptedPassword = _stringCipher.Encrypt(encryptedPassword.Replace(NotEncryptedPasswordPrefix, ""));
 
                     var configFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
                     configFile.AppSettings.Settings["SenderEmailPassword"].Value = encryptedPassword;
@@ -68,9 +72,9 @@ namespace ReportService
         private string DecryptSenderEmailPassword()
         {
             var encryptedPassword = ConfigurationManager.AppSettings["SenderEmailPassword"];
-            if (encryptedPassword.StartsWith("encrypt:"))
+            if (encryptedPassword.StartsWith(NotEncryptedPasswordPrefix))
             {
-                encryptedPassword = _stringCipher.Encrypt(encryptedPassword.Replace("encrypt:", ""));
+                encryptedPassword = _stringCipher.Encrypt(encryptedPassword.Replace(NotEncryptedPasswordPrefix, ""));
 
                 var configFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
                 configFile.AppSettings.Settings["SenderEmailPassword"].Value = encryptedPassword;
@@ -95,7 +99,9 @@ namespace ReportService
             try
             {
                 await SendError();
-                SendReport();
+                if (Convert.ToBoolean(ConfigurationManager.AppSettings["WhetherSendReports"]))
+                    SendReport();
+                
             }
             catch (Exception ex)
             {
@@ -107,12 +113,12 @@ namespace ReportService
 
         private async Task SendError()
         {
-            var errors = _errorRepository.GetLastErrors(IntervalMinutes);
+            var errors = _errorRepository.GetLastErrors(_intervalMinutes);
 
             if (errors == null || !errors.Any())
                 return;
 
-            await _email.Send("Błędy w aplikacji", _htmlEmail.GenerateErrors(errors, IntervalMinutes), _emailReceiver);
+            await _email.Send("Błędy w aplikacji", _htmlEmail.GenerateErrors(errors, _intervalMinutes), _emailReceiver);
 
             Logger.Info("Error sent...");
         }
@@ -121,7 +127,7 @@ namespace ReportService
         {
             var actualHour = DateTime.Now.Hour;
 
-            if (actualHour < SendHour)
+            if (actualHour < _sendHour)
                 return;
 
             var report = _reportRepository.GetLastNotSentReport();
